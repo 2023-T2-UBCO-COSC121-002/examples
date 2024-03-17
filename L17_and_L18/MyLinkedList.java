@@ -1,13 +1,13 @@
-package L17;
+package L17_and_L18;
 
 import java.util.Iterator;
 
-public class MyLinkedList<E> implements MyList<E> {
+public class MyLinkedList<E> extends MyAbstractList<E> {
 
 	int size = 0;
 	
-	Node<E> head =null;
-	Node<E> tail =null;
+	private Node<E> head =null;
+	private Node<E> tail =null;
 	
 	public void addLast(E e)
 	{
@@ -128,11 +128,7 @@ public class MyLinkedList<E> implements MyList<E> {
 		}
 		
 	}
-	@Override
-	public boolean remove(E e) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 	@Override
 	public E remove(int idx) {
 
@@ -188,29 +184,18 @@ public class MyLinkedList<E> implements MyList<E> {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
+
 	@Override
 	public Iterator<E> iterator() {
 		// TODO Auto-generated method stub
 		return new myListIterator();
 	}
 	
-//	public myListIterator<E> iterator(){
-//		return newMyListIterator()
-//	}
-//	
-	class myListIterator<E> implements java.util.Iterator<E>{
+
+	class myListIterator implements java.util.Iterator<E>{
 		
-		private Node<E> current = (Node<E>)head;
+		private Node<E> current = (Node<E>) head;
 		
 		@Override
 		public boolean hasNext() {
@@ -226,6 +211,20 @@ public class MyLinkedList<E> implements MyList<E> {
 			return temp;
 		}
 		
+		public void remove() {
+			
+		}
+	}
+	
+	//this is an inner class for my Node 
+	@SuppressWarnings("hiding")
+	class Node<E> {
 
+		private E element;				//the contents
+		private Node<E> next;			//reference to next node
+		
+		public Node(E e) {
+			this.element = e;
+		}
 	}
 }
