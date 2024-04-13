@@ -1,7 +1,13 @@
-package L17_and_L18;
+package Review_DoubleLinkedLIst;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 
+
+/**
+ * A doubly linked list 
+ * @param <E>
+ */
 public class MyLinkedList<E> extends MyAbstractList<E> {
 
 	int size = 0;
@@ -19,8 +25,10 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
 		{
 			Node<E> newNode = new Node<>(e);
 			newNode.next = null;  //do this first
-			tail.next = newNode;
-			newNode.previous = tail;
+			
+			tail.next = newNode;  //links forward
+			newNode.previous = tail; //links backwards
+			
 			tail = tail.next;
 		}
 		size ++;			//Don't forget this!!
@@ -36,17 +44,20 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
 		else 
 		{
 			Node<E> newNode = new Node<>(e);
-			newNode.next = head;  //do this first
+			newNode.next = head;  //do this first (same as SLL)
+			head.previous = newNode;	// DLL previous pointer
+			
 			head = newNode;
-			head.previous = null;
+			//head.previous = null;
 		}
-		size ++;
+		size ++;		//don't forget to increase size
 	}
 	
 	@Override
 	public void add(E e) {	
 		this.addLast(e);
 	}
+	
 	@Override
 	public void add(int idx, E e) {
 		
@@ -66,8 +77,13 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
 				{
 					previous = previous.next;
 				}
+				
 				newNode.next = previous.next;			//order matters!
+				previous.next.previous = newNode;		//the back link to new node
+				
+				newNode.previous = previous;
 				previous.next = newNode;
+				
 				size++;
 			}
 		}
@@ -83,7 +99,8 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
 		{
 			size--;
 			Node<E> temp = head;		//order matters!!
-			head = head.next;	
+			head = head.next;			//move forward 1 node	
+			head.previous = null;		//break the line back to the old head
 			if (size == 0) tail = null;
 			return temp.element;
 		}
@@ -119,14 +136,11 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
 		{
 			size--;
 			Node<E> temp = tail;		//order matters!!
-			Node<E> previous = head;
-			//note: we want to get to the node BEFO(not0)RE the tail
-			for (int i = 0; i < size - 2; i++)		//be careful with logic!
-			{
-				previous = previous.next;
-			}
-			tail = previous;
-			tail.next = null;			//Don't forget this!!!!!
+			
+			tail = tail.previous; 		//move tail ref back 1 node
+			
+			tail.next = null;			//break the link to the node being removed
+			temp.previous = null;		//meh - ok
 			return temp.element;
 		}
 		
@@ -150,17 +164,24 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
 			{
 				previous = previous.next;
 			}
-			Node<E> current = previous.next;
-			previous.next = current.next;
+			
+			Node<E> current = previous.next;			//same same (no change from SLL)
+			previous.next = current.next;				//same 
+			current.next.previous = previous;			//make our back link
+			
+			current.previous = null;			
 			current.next = null;
+			
 			size--;
+			
 			return current.element;
 		}
 	}
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		head = null;
+		tail = null;
+		size =  0;
 	}
 	@Override
 	public E get(int idx) {
@@ -190,15 +211,16 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
 	
 
 	@Override
-	public Iterator<E> iterator() {
+	public ListIterator<E> iterator() {
 		// TODO Auto-generated method stub
 		return new myListIterator();
 	}
 	
 
-	class myListIterator implements java.util.Iterator<E>{
+	class myListIterator implements java.util.ListIterator<E>{
 		
 		private Node<E> current = (Node<E>) head;
+		private Node<E> previous = current.previous;
 		
 		@Override
 		public boolean hasNext() {
@@ -206,15 +228,56 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
 				return true;
 			else return false;
 		}
+		
+		public boolean hasPrevious() {
+			if (previous != null)
+				return true;
+			else return false;
+		}
+		
 
 		@Override
 		public E next() {
 			E temp = current.element;
+			previous = current;
 			current = current.next;
 			return temp;
 		}
 		
+		
+		public E previous() {
+			E temp = previous.element;
+			current = previous;
+			previous = previous.previous;
+			return temp;
+		}
+		
+		
 		public void remove() {
+			
+		}
+
+		@Override
+		public int nextIndex() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public int previousIndex() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public void set(E e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void add(E e) {
+			// TODO Auto-generated method stub
 			
 		}
 	}
