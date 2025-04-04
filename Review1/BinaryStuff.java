@@ -101,7 +101,7 @@ public static void decrypt(File src, int key) throws IllegalArgumentException {
 		
 		while (in.available() > 0)
 		{
-			int input = (byte) (((byte) in.read() - key)); 
+			int input = (((int)(byte) in.read()) - key); 
 			if (input < 0) input += 256;  //this undoes the wrapping operation
 			out.write(input);
 		}
