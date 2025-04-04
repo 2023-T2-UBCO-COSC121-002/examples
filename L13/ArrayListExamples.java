@@ -46,6 +46,7 @@ public class ArrayListExamples {
 		
 		al.remove("one");
 		System.out.println(al);
+		System.out.println(al[0]);
 
 		
 //		

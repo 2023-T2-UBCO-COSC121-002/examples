@@ -9,6 +9,7 @@ public abstract class MyAbstractList<E> implements MyList<E>{
 		for (int i = 0; i < o.length; i++)
 			this.add(o[i]);
 	}
+	
 	public void add(E e) 								//adds e to the end
 	{
 		add(size, e);									//call the other add method
